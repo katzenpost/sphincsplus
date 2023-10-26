@@ -7,13 +7,9 @@ import "C"
 import (
 	"fmt"
 	"unsafe"
-
-	"github.com/katzenpost/katzenpost/sphincsplus/ref/params"
 )
 
 var (
-	_ = params.A
-
 	// PublicKeySize is the size in bytes of the public key.
 	PublicKeySize int = C.CRYPTO_PUBLICKEYBYTES
 
