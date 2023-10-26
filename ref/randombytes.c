@@ -11,7 +11,7 @@ static int fd = -1;
 
 void randombytes(unsigned char *x, unsigned long long xlen)
 {
-    unsigned long long i;
+    int i;
 
     if (fd == -1) {
         for (;;) {
@@ -31,7 +31,7 @@ void randombytes(unsigned char *x, unsigned long long xlen)
             i = 1048576;
         }
 
-        i = (unsigned long long)read(fd, x, i);
+        i = read(fd, x, i);
         if (i < 1) {
             sleep(1);
             continue;

@@ -27,7 +27,7 @@ KPERF_LIST
 uint64_t g_counters[10];
 uint64_t g_config[10];
 
-static void configure_rdtsc(void) {
+static void configure_rdtsc() {
   if (kpc_set_config(3, g_config)) {
     printf("kpc_set_config failed\n");
     return;

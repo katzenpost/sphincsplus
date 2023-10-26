@@ -26,7 +26,7 @@ void	fprintBstr(FILE *fp, char *S, unsigned char *A, unsigned long long L);
 char    AlgName[] = "My Alg Name";
 
 int
-main(void)
+main()
 {
     char                fn_req[32], fn_rsp[32];
     FILE                *fp_req, *fp_rsp;
@@ -35,7 +35,7 @@ main(void)
     unsigned char       entropy_input[48];
     unsigned char       *m, *sm, *m1;
     unsigned long long  mlen, smlen, mlen1;
-    int                 count;
+    int                 count = 0;
     int                 done;
     unsigned char       pk[CRYPTO_PUBLICKEYBYTES], sk[CRYPTO_SECRETKEYBYTES];
     int                 ret_val;
@@ -235,8 +235,8 @@ ReadHex(FILE *infile, unsigned char *A, int Length, char *str)
                 ich = 0;
 
 			for ( i=0; i<Length-1; i++ )
-				A[i] = (unsigned char)((A[i] << 4) | (A[i+1] >> 4));
-			A[Length-1] = (unsigned char)((A[Length-1] << 4) | ich);
+				A[i] = (A[i] << 4) | (A[i+1] >> 4);
+			A[Length-1] = (A[Length-1] << 4) | ich;
 		}
 	else
 		return 0;

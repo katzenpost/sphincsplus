@@ -7,7 +7,7 @@
 #include "../randombytes.h"
 #include "../params.h"
 
-int main(void)
+int main()
 {
     /* Make stdout buffer more responsive. */
     setbuf(stdout, NULL);
