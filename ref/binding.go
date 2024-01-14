@@ -1,15 +1,20 @@
 package sphincsplus
 
 //#cgo linux LDFLAGS: "-L./ -L/usr/lib/x86_64-linux-gnu/ -lcrypto"
-//#cgo CFLAGS: -DPARAMS=sphincs-shake-256f
 //#include "api.h"
 import "C"
 import (
 	"fmt"
 	"unsafe"
+
+	"github.com/katzenpost/hpqc/util"
+
+	"github.com/katzenpost/sphincsplus/ref/params"
 )
 
 var (
+	_ = params.A
+
 	// PublicKeySize is the size in bytes of the public key.
 	PublicKeySize int = C.CRYPTO_PUBLICKEYBYTES
 
@@ -52,7 +57,7 @@ type PublicKey struct {
 
 // Reset overwrites the key with zeros.
 func (p *PublicKey) Reset() {
-	ExplicitBzero(p.publicKey)
+	util.ExplicitBzero(p.publicKey)
 }
 
 // Verify checks whether the given signature is valid.
@@ -105,7 +110,7 @@ type PrivateKey struct {
 
 // Reset overwrites the key with zeros.
 func (p *PrivateKey) Reset() {
-	ExplicitBzero(p.privateKey)
+	util.ExplicitBzero(p.privateKey)
 }
 
 // Sign signs the given message and returns the signature.
