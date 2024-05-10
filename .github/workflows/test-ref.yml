@@ -1,14 +1,16 @@
-name: Tests for ref implementation
+name: Tests for ref implementation (gcc, clang) (ubuntu, macos)
 
 on:
   - push
   - pull_request
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-linux:
+    runs-on: ${{ matrix.OS }}
     strategy:
       matrix:
+        OS: ['ubuntu-latest']
+        CC: ['gcc', 'clang']
         hash:
           - sha2
           - shake
@@ -27,6 +29,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Run make
         run: |
+          export CC=${{ matrix.CC }}
           make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} clean
           make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} PARAMS=sphincs-${{ matrix.hash }}-${{ matrix.size }}${{ matrix.option }} tests
           make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} PARAMS=sphincs-${{ matrix.hash }}-${{ matrix.size }}${{ matrix.option }} test
@@ -34,4 +37,38 @@ jobs:
       - name: Run PQCgenKAT_sign
         run: python3 vectors.py sphincs-${{ matrix.hash }}-${{ matrix.size }}${{ matrix.option }}-${{ matrix.thash }} ref
 
+  build-macos:
+    runs-on: ${{ matrix.OS }}
+    strategy:
+      matrix:
+        OS: ['macos-12']
+        CC: ['gcc', 'clang']
+        hash:
+          - sha2
+          - shake
+          - haraka
+        size:
+          - 128
+          - 192
+          - 256
+        option:
+          - s
+          - f
+        thash:
+          - simple
+          - robust
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        run: |
+          brew install openssl
+      - name: Run make
+        run: |
+          export CC=${{ matrix.CC }}
+          make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} clean
+          make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} PARAMS=sphincs-${{ matrix.hash }}-${{ matrix.size }}${{ matrix.option }} tests
+          make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} PARAMS=sphincs-${{ matrix.hash }}-${{ matrix.size }}${{ matrix.option }} test
+          make -C ref THASH=${{ matrix.thash }} PQCgenKAT_sign
+      - name: Run PQCgenKAT_sign
+        run: python3 vectors.py sphincs-${{ matrix.hash }}-${{ matrix.size }}${{ matrix.option }}-${{ matrix.thash }} ref
 #  vim: set ft=yaml ts=2 sw=2 et :

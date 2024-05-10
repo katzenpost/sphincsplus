@@ -1,4 +1,4 @@
-name: Tests for sha2-avx2 implementation
+name: Tests for sha2-avx2 implementation (gcc, clang)
 
 on:
   - push
@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        CC: ['gcc', 'clang']
         size:
           - 128
           - 192
@@ -23,6 +24,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Run make
         run: |
+          export CC=${{ matrix.CC }}
           make -C sha2-avx2 THASH=${{ matrix.thash }} clean
           make -C sha2-avx2 THASH=${{ matrix.thash }} PARAMS=sphincs-sha2-${{ matrix.size }}${{ matrix.option }} tests
           make -C sha2-avx2 THASH=${{ matrix.thash }} PARAMS=sphincs-sha2-${{ matrix.size }}${{ matrix.option }} test
