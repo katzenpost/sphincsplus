@@ -1,0 +1,45 @@
+name: Tests golang bindings for ref implementation
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ${{ matrix.OS }}
+    strategy:
+      matrix:
+        hash:
+          - sha2
+          - shake
+          - haraka
+        size:
+          - 128
+          - 192
+          - 256
+        option:
+          - s
+          - f
+        thash:
+          - simple
+          - robust
+        OS: ["ubuntu-latest", "macos-latest"]
+        go-version: ["1.20"]
+         #go-version: ["1.22.x"]
+        # later: go-version: ["1.19", "1.20", "1.21.x", "1.22.x"]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Run go test
+        run: |
+          export CGO_ENABLE=1
+          export CGO_CFLAGS=" -D HASH=${{ matrix.hash }} -D THASH=${{ matrix.thash }} -D PARAMS=sphincs-${{ matrix.hash }}-${{ matrix.size }}${{ matrix.option }}"
+          go test --tags=sphincs_${{ matrix.hash }}_${{ matrix.size }}${{ matrix.option }} -v ./...
+
+#  vim: set ft=yaml ts=2 sw=2 et :

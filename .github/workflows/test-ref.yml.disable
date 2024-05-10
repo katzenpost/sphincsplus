@@ -28,8 +28,8 @@ jobs:
       - name: Run make
         run: |
           make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} clean
-          make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} PARAMS=sphincs-${{ matrix.hash }}-${{ matrix.size }}${{ matrix.option }} tests
-          make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} PARAMS=sphincs-${{ matrix.hash }}-${{ matrix.size }}${{ matrix.option }} test
+          make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} PARAMS=sphincs_${{ matrix.hash }}_${{ matrix.size }}${{ matrix.option }} tests
+          make -C ref HASH=${{ matrix.hash }} THASH=${{ matrix.thash }} PARAMS=sphincs_${{ matrix.hash }}_${{ matrix.size }}${{ matrix.option }} test
           make -C ref THASH=${{ matrix.thash }} PQCgenKAT_sign
       - name: Run PQCgenKAT_sign
         run: python3 vectors.py sphincs-${{ matrix.hash }}-${{ matrix.size }}${{ matrix.option }}-${{ matrix.thash }} ref

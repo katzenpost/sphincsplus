@@ -1,3 +1,5 @@
+//go:build cgo && ((linux && amd64) || (darwin && amd64) || (darwin && arm64) || (windows && amd64)) && (sphincs_sha2_128f || sphincs_sha2_128s || sphincs_sha2_192f || sphincs_sha2_192s || sphincs_sha2_256f || sphincs_sha2_256s)
+
 /* Based on the public domain implementation in
  * crypto_hash/sha512/ref/ from http://bench.cr.yp.to/supercop.html
  * by D. J. Bernstein */

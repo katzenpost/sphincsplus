@@ -1,4 +1,4 @@
-PARAMS = sphincs-haraka-128f
+PARAMS ?= sphincs-haraka-128f
 THASH = robust
 
 CC=/usr/bin/gcc
