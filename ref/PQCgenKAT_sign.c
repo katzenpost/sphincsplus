@@ -1,3 +1,4 @@
+// +build PQCgenKAT_sign
 
 //
 //  PQCgenKAT_sign.c

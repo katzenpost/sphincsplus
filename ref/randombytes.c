@@ -1,7 +1,8 @@
+//go:build cgo && ((linux && amd64) || (darwin && amd64) || (darwin && arm64))
+
 /*
 This code was taken from the SPHINCS reference implementation and is public domain.
 */
-
 #include <fcntl.h>
 #include <unistd.h>
 

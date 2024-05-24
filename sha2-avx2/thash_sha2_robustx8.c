@@ -1,3 +1,5 @@
+//go:build cgo && ((linux && amd64) || (darwin && amd64) || (darwin && arm64) || (windows && amd64)) && (sphincs_sha2_128f || sphincs_sha2_192f || sphincs_sha2_256f)
+
 #include <stdint.h>
 #include <string.h>
 

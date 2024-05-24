@@ -1,8 +1,11 @@
+//go:build cgo && ((linux && amd64) || (darwin && amd64) || (darwin && arm64) || (windows && amd64)) && openssl
+
 //
 //  rng.c
 //
 //  Created by Bassham, Lawrence E (Fed) on 8/29/17.
 //  Copyright © 2017 Bassham, Lawrence E (Fed). All rights reserved.
+//
 //
 
 #include <string.h>
@@ -207,12 +210,4 @@ AES256_CTR_DRBG_Update(unsigned char *provided_data,
     memcpy(Key, temp, 32);
     memcpy(V, temp+32, 16);
 }
-
-
-
-
-
-
-
-
 

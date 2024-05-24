@@ -1,0 +1,43 @@
+name: Tests golang bindings for sha2-avx2 implementation
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ${{ matrix.OS }}
+    strategy:
+      matrix:
+        OS: ["ubuntu-latest", "macos-12"]
+        go-version: ["1.20"]
+        hash:
+          - sha2
+        size:
+          - 128
+          - 192
+          - 256
+        option:
+          - s
+          - f
+        thash:
+          - simple
+          - robust
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Run go build
+        run: |
+          go build --tags=sha2_avx2,sphincs_${{ matrix.hash }}_${{ matrix.size }}${{ matrix.option }} -v ./sha2-avx2/...
+
+      - name: Run go test
+        run: |
+          go test --tags=sha2_avx2,sphincs_${{ matrix.hash }}_${{ matrix.size }}${{ matrix.option }} -v ./sha2-avx2/...
+
+#  vim: set ft=yaml ts=2 sw=2 et :

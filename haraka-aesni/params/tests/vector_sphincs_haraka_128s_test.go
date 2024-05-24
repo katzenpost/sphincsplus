@@ -1,0 +1,1 @@
+../../../ref/params/tests/vector_sphincs_haraka_128s_test.go

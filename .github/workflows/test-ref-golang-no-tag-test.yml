@@ -1,0 +1,35 @@
+name: Tests golang bindings (no env) for ref implementation
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ${{ matrix.OS }}
+    strategy:
+      matrix:
+        OS: ["ubuntu-latest", "macos-latest"]
+        go-version: ["1.22.x"]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Build without setting any environment variables
+        run: |
+          cd ref/ && go build -v && go clean -v
+
+      - name: Run top-level go test without setting any environment variables
+        run: |
+          cd ref/ && go test -v
+
+      - name: Run all go test without setting any environment variables
+        run: |
+          cd ref/ && go test -v ./...
+
+#  vim: set ft=yaml ts=2 sw=2 et :
