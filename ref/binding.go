@@ -75,7 +75,9 @@ func (p *PublicKey) Verify(signature, message []byte) bool {
 
 // Bytes returns the PublicKey as a byte slice.
 func (p *PublicKey) Bytes() []byte {
-	return p.publicKey
+	out := make([]byte, len(p.publicKey))
+	copy(out, p.publicKey)
+	return out
 }
 
 // FromBytes loads a PublicKey from the given byte slice.
@@ -84,24 +86,10 @@ func (p *PublicKey) FromBytes(data []byte) error {
 		return ErrPublicKeySize
 	}
 
-	p.publicKey = data
+	p.publicKey = make([]byte, len(data))
+	copy(p.publicKey, data)
 	return nil
 }
-
-// Verify checks whether the given signature is valid.
-/*
-func (p *PublicKey) Verify(signature, message []byte) bool {
-	ret := C.crypto_sign_verify((*C.uchar)(unsafe.Pointer(&signature[0])),
-		C.ulong(len(signature)),
-		(*C.uchar)(unsafe.Pointer(&message[0])),
-		C.ulong(len(message)),
-		(*C.uchar)(unsafe.Pointer(&p.publicKey[0])))
-	if ret == 0 {
-		return true
-	}
-	return false
-}
-*/
 
 // PrivateKey is a private Sphincs+ key.
 type PrivateKey struct {
@@ -127,7 +115,9 @@ func (p *PrivateKey) Sign(message []byte) []byte {
 
 // Bytes returns the PrivateKey as a byte slice.
 func (p *PrivateKey) Bytes() []byte {
-	return p.privateKey
+	out := make([]byte, len(p.privateKey))
+	copy(out, p.privateKey)
+	return out
 }
 
 // FromBytes loads a PrivateKey from the given byte slice.
@@ -136,6 +126,7 @@ func (p *PrivateKey) FromBytes(data []byte) error {
 		return ErrPrivateKeySize
 	}
 
-	p.privateKey = data
+	p.privateKey = make([]byte, len(data))
+	copy(p.privateKey, data)
 	return nil
 }
